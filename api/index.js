@@ -1,9 +1,9 @@
 const ytdl = require("ytdl-core");
 const axios = require("axios");
 
-module.exports = async (req, res) => {
+const run = async (req, res) => {
   const { video_id: videoId, url: videoUrl, proxy = false } = req.query;
-  if (!url) throw Error("Missing video url");
+  if (!videoId || !videoUrl) throw Error("[MISSING] VIDEO_ID OR URL");
 
   const url = await ytdl
     .getInfo(videoId ? `https://www.youtube.com/watch?v=${videoId}` : videoUrl)
@@ -24,3 +24,10 @@ module.exports = async (req, res) => {
         )
     : res.writeHead(301, { Location: url }).end();
 };
+
+module.exports = (req, res) =>
+  run(req, res).catch((error) =>
+    res
+      .writeHead(500)
+      .end(JSON.stringify(error, Object.getOwnPropertyNames(error)))
+  );
