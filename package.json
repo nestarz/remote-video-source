@@ -1,0 +1,12 @@
+{
+  "name": "remote-video-source",
+  "version": "1.0.0",
+  "main": "api/index.js",
+  "repository": "git@github.com:nestarz/remote-video-source.git",
+  "author": "Elias Rhouzlane <elias.rhouzlane@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "ytdl-core": "^4.10.1"
+  }
+}
