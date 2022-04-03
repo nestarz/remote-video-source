@@ -1,6 +1,22 @@
 const ytdl = require("ytdl-core");
 const axios = require("axios");
 
+const allowCors = (fn) => async (req, res) => {
+  Object.entries({
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+    "Access-Control-Allow-Headers":
+      "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+  }).map((value) => res.setHeader(...value));
+
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+  return await fn(req, res);
+};
+
 const run = async (req, res) => {
   const { video_id: videoId, url: videoUrl, proxy = false } = req.query;
   if (!videoId && !videoUrl) throw Error("[MISSING] VIDEO_ID OR URL");
@@ -25,9 +41,9 @@ const run = async (req, res) => {
     : res.writeHead(301, { Location: url }).end();
 };
 
-module.exports = (req, res) =>
+module.exports = allowCors((req, res) =>
   run(req, res).catch((error) =>
     res
       .writeHead(500)
       .end(JSON.stringify(error, Object.getOwnPropertyNames(error)))
-  );
+  ));
