@@ -1,5 +1,5 @@
-const ytdl = require("ytdl-core");
-const axios = require("axios");
+import ytdl from "ytdl-core";
+import axios from "axios";
 
 const allowCors = (fn) => async (req, res) => {
   Object.entries({
@@ -41,9 +41,10 @@ const run = async (req, res) => {
     : res.writeHead(301, { Location: url }).end();
 };
 
-module.exports = allowCors((req, res) =>
+export default allowCors((req, res) =>
   run(req, res).catch((error) =>
     res
       .writeHead(500)
       .end(JSON.stringify(error, Object.getOwnPropertyNames(error)))
-  ));
+  )
+);
