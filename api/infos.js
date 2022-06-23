@@ -1,9 +1,9 @@
-import { path as ffprobePath } from "@ffprobe-installer/ffprobe";
+import ffprobe from "ffprobe-static";
 import { fileTypeFromStream } from "file-type";
 import ffmpeg from "fluent-ffmpeg";
 import fetch from "node-fetch";
 import probe from "probe-image-size";
-ffmpeg.setFfprobePath(ffprobePath);
+ffmpeg.setFfprobePath(ffprobe.path);
 
 export default async (req, res) => {
   const { url: raw } = req.query;
