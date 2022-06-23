@@ -4,7 +4,7 @@ import ffmpeg from "fluent-ffmpeg";
 import fetch from "node-fetch";
 import ytdl from "ytdl-core";
 import probe from "probe-image-size";
-import file_size_url from "./file_size_url";
+import file_size_url from "./file_size_url.js";
 ffmpeg.setFfprobePath(ffprobe.path);
 
 const allowCors = (fn) => async (req, res) => {
