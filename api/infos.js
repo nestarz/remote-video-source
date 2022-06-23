@@ -2,10 +2,28 @@ import ffprobe from "ffprobe-static";
 import { fileTypeFromStream } from "file-type";
 import ffmpeg from "fluent-ffmpeg";
 import fetch from "node-fetch";
+import ytdl from "ytdl-core";
 import probe from "probe-image-size";
+import file_size_url from "./file_size_url";
 ffmpeg.setFfprobePath(ffprobe.path);
 
-export default async (req, res) => {
+const allowCors = (fn) => async (req, res) => {
+  Object.entries({
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+    "Access-Control-Allow-Headers":
+      "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+  }).map((value) => res.setHeader(...value));
+
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+  return await fn(req, res);
+};
+
+const run = async (req, res) => {
   const { url: raw } = req.query;
   if (!raw) throw Error("[MISSING] URL");
 
@@ -41,28 +59,11 @@ export default async (req, res) => {
   );
 };
 
-import https from "https";
-import http from "http";
-import ytdl from "ytdl-core";
+export default allowCors((req, res) =>
+  run(req, res).catch((error) =>
+    res
+      .writeHead(500)
+      .end(JSON.stringify(error, Object.getOwnPropertyNames(error)))
+  )
+);
 
-const file_size_url = async (url) => {
-  if (!url) return Promise.reject(new Error("Invalid Url"));
-
-  return new Promise(async (res, rej) => {
-    try {
-      if (url.startsWith("https://") || url.startsWith("http://")) {
-        let req = url.startsWith("https://") ? https.get(url) : http.get(url);
-        req.once("response", async (r) => {
-          let c = parseInt(r.headers["content-length"]);
-          if (!isNaN(c) && r.statusCode === 200) res(c);
-          else rej("Couldn't get file size");
-        });
-        req.once("error", async (e) => rej(e));
-      } else {
-        throw "error: The address should be http or https";
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  });
-};
