@@ -1,5 +1,6 @@
 import https from "https";
 import http from "http";
+import fetch from "node-fetch";
 
 export default async (url) => {
   if (!url) return Promise.reject(new Error("Invalid Url"));
