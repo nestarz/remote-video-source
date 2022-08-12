@@ -17,8 +17,7 @@ const allowCors = (fn) => async (req, res) => {
   }).map((value) => res.setHeader(...value));
 
   if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
+    return res.writeHead(200).end();
   }
   return await fn(req, res);
 };
@@ -66,4 +65,3 @@ export default allowCors((req, res) =>
       .end(JSON.stringify(error, Object.getOwnPropertyNames(error)))
   )
 );
-
