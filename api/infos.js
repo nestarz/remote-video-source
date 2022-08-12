@@ -6,6 +6,7 @@ import ytdl from "ytdl-core";
 import probe from "probe-image-size";
 import file_size_url from "./file_size_url.js";
 ffmpeg.setFfprobePath(ffprobe.path);
+console.log(ffprobe.path);
 
 const allowCors = (fn) => async (req, res) => {
   Object.entries({
@@ -50,8 +51,10 @@ const run = async (req, res) => {
         : await new Promise((res) =>
             ffmpeg.ffprobe(
               url,
-              (err, { streams: [{ width, height, duration, size }] }) =>
-                err ? rej(err) : res({ width, height, duration, size })
+              (
+                err,
+                { format: { size }, streams: [{ width, height, duration }] }
+              ) => (err ? rej(err) : res({ width, height, duration, size }))
             )
           )),
       contentType: mime,
