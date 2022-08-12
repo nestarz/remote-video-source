@@ -18,7 +18,18 @@ export default async (url) => {
         throw "error: The address should be http or https";
       }
     } catch (error) {
-      console.log(error);
+      rej(error);
     }
-  });
+  }).catch(
+    () =>
+      new Promise((res, rej) =>
+        fetch(url, { method: "HEAD" })
+          .then((r) => {
+            let c = parseInt(r.headers["content-length"]);
+            if (!isNaN(c) && r.statusCode === 200) res(c);
+            else rej("Couldn't get file size");
+          })
+          .catch(rej)
+      )
+  );
 };
