@@ -17,7 +17,7 @@ const allowCors = (fn) => async (req, res) => {
   }).map((value) => res.setHeader(...value));
 
   if (req.method === "OPTIONS") {
-    return res.writeHead(200).end();
+    return res.end();
   }
   return await fn(req, res);
 };
@@ -39,7 +39,7 @@ const run = async (req, res) => {
     .catch(() => raw);
 
   const mime = (await fileTypeFromStream((await fetch(url)).body)).mime;
-  return res.writeHead(200).end(
+  return res.end(
     JSON.stringify({
       ...(mime.includes("image")
         ? await probe(url).then(({ width, height }) => ({ width, height }))
