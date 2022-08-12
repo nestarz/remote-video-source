@@ -42,15 +42,18 @@ const run = async (req, res) => {
   return res.end(
     JSON.stringify({
       ...(mime.includes("image")
-        ? await probe(url).then(({ width, height }) => ({ width, height }))
+        ? await probe(url).then(async ({ width, height }) => ({
+            width,
+            height,
+            size: await file_size_url(url),
+          }))
         : await new Promise((res) =>
             ffmpeg.ffprobe(
               url,
-              (err, { streams: [{ width, height, duration }] }) =>
-                err ? rej(err) : res({ width, height, duration })
+              (err, { streams: [{ width, height, duration, size }] }) =>
+                err ? rej(err) : res({ width, height, duration, size })
             )
           )),
-      size: await file_size_url(url),
       contentType: mime,
       name: url.split("/").pop()?.split(".")?.shift(),
       url,

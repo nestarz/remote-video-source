@@ -12,7 +12,7 @@ export default async (url) => {
         req.once("response", async (r) => {
           let c = parseInt(r.headers["content-length"]);
           if (!isNaN(c) && r.statusCode === 200) res(c);
-          else rej("Couldn't get file size");
+          else rej("Couldn't get file size (http.s)");
         });
         req.once("error", async (e) => rej(e));
       } else {
@@ -28,7 +28,7 @@ export default async (url) => {
           .then((r) => {
             let c = parseInt(r.headers["content-length"]);
             if (!isNaN(c) && r.statusCode === 200) res(c);
-            else rej("Couldn't get file size");
+            else rej("Couldn't get file size (fetch)");
           })
           .catch(rej)
       )
