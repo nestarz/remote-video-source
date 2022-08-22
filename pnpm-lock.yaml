@@ -9,7 +9,7 @@ specifiers:
   fluent-ffmpeg: ^2.1.2
   node-fetch: ^3.2.4
   probe-image-size: ^7.2.3
-  ytdl-core: ^4.10.1
+  ytdl-core: 4.10.0
 
 dependencies:
   '@ffprobe-installer/ffprobe': 1.4.1
@@ -20,7 +20,7 @@ dependencies:
   fluent-ffmpeg: 2.1.2
   node-fetch: 3.2.4
   probe-image-size: 7.2.3
-  ytdl-core: 4.11.0
+  ytdl-core: 4.10.0
 
 packages:
 
@@ -353,9 +353,9 @@ packages:
       isexe: 2.0.0
     dev: false
 
-  /ytdl-core/4.11.0:
-    resolution: {integrity: sha512-Q3hCLiUA9AOGQXzPvno14GN+HgF9wsO1ZBHlj0COTcyxjIyFpWvMfii0UC4/cAbVaIjEdbWB71GdcGuc4J1Lmw==}
-    engines: {node: '>=12'}
+  /ytdl-core/4.10.0:
+    resolution: {integrity: sha512-RCCoSVTmMeBPH5NFR1fh3nkDU9okvWM0ZdN6plw6I5+vBBZVUEpOt8vjbSgprLRMmGUsmrQZJhvG1CHOat4mLA==}
+    engines: {node: '>=10'}
     dependencies:
       m3u8stream: 0.8.6
       miniget: 4.2.2
