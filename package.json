@@ -16,7 +16,6 @@
     "file_size_url": "^1.0.4",
     "file-type": "^17.1.1",
     "fluent-ffmpeg": "^2.1.2",
-    "magika": "^0.2.12",
     "node-fetch": "^3.2.4",
     "probe-image-size": "^7.2.3",
     "ytdl-core": "^4.11.5"
