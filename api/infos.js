@@ -28,10 +28,6 @@ const run = async (req, res) => {
   if (!raw) throw Error("[MISSING] URL");
   console.warn("decode:", decodeURIComponent(raw));
 
-  const d = await ytdl
-    .getInfo(decodeURIComponent(raw));
-  console.log(d);
-
   const url = await ytdl
     .getInfo(decodeURIComponent(raw))
     .then(({ formats }) => formats)
@@ -42,7 +38,7 @@ const run = async (req, res) => {
         .shift()
     )
     .then((video) => (video ? video.url : raw))
-    .catch(() => raw);
+    .catch((d) => console.error(d) ?? raw);
 
   const mime = (await fileTypeFromStream((await fetch(url)).body)).mime;
   return res.end(
