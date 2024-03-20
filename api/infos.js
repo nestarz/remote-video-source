@@ -28,7 +28,7 @@ const run = async (req, res) => {
   if (!raw) throw Error("[MISSING] URL");
 
   const url = await ytdl
-    .getInfo(raw)
+    .getInfo(decodeURIComponent(raw))
     .then(({ formats }) => formats)
     .then((arr) =>
       arr

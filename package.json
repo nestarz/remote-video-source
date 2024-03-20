@@ -13,11 +13,12 @@
     "@ffprobe-installer/ffprobe": "^1.4.1",
     "axios": "^0.21.1",
     "ffprobe-static": "^3.1.0",
-    "file-type": "^17.1.1",
     "file_size_url": "^1.0.4",
+    "file-type": "^17.1.1",
     "fluent-ffmpeg": "^2.1.2",
+    "magika": "^0.2.12",
     "node-fetch": "^3.2.4",
     "probe-image-size": "^7.2.3",
-    "ytdl-core": "4.10.0"
+    "ytdl-core": "^4.11.5"
   }
 }
