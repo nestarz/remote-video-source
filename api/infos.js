@@ -26,7 +26,11 @@ const allowCors = (fn) => async (req, res) => {
 const run = async (req, res) => {
   const { url: raw } = req.query;
   if (!raw) throw Error("[MISSING] URL");
-  console.warn("decode:", decodeURIComponent(raw))
+  console.warn("decode:", decodeURIComponent(raw));
+
+  const d = await ytdl
+    .getInfo(decodeURIComponent(raw));
+  console.log(d);
 
   const url = await ytdl
     .getInfo(decodeURIComponent(raw))
