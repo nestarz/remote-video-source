@@ -49,7 +49,7 @@ const run = async (req, res) => {
           height,
           size: await file_size_url(url),
         }))
-        : await new Promise((res) =>
+        : await new Promise((res, rej) =>
           ffmpeg.ffprobe(
             url,
             (
