@@ -28,17 +28,26 @@ const run = async (req, res) => {
   if (!raw) throw Error("[MISSING] URL");
   console.warn("decode:", decodeURIComponent(raw));
 
-  const url = await ytdl
-    .getInfo(decodeURIComponent(raw))
+  const value = encodeURIComponent(raw);
+  const url = await (
+    fetch(
+      "https://remote-video-source-py-fsk2.vercel.app/info?url=" +
+        value,
+    ).then((r) => r.json()).then((v) => v)
+  )
     .then(({ formats }) => formats)
     .then((arr) =>
       arr
-        .filter(({ hasVideo, hasAudio }) => hasVideo && hasAudio)
-        .sort(({ bitrate: a }, { bitrate: b }) => b - a)
+        .filter(({ url }) => url)
+        .filter(({ protocol }) => protocol === "https")
+        .filter(({ acodec, vcodec }) => acodec !== "none" && vcodec !== "none")
+        // .filter(({ hasVideo, hasAudio }) => hasVideo && hasAudio)
+        .sort(({ width: a }, { width: b }) => b - a)
         .shift()
     )
     .then((video) => (video ? video.url : raw))
     .catch((d) => console.error(d) ?? raw);
+  console.log(url);
 
   const mime = (await fileTypeFromStream((await fetch(url)).body)).mime;
   return res.end(
@@ -51,7 +60,7 @@ const run = async (req, res) => {
         }))
         : await new Promise((res, rej) =>
           ffmpeg.ffprobe(
-            url,  
+            url,
             (
               err,
               {
